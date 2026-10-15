@@ -5,6 +5,10 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build-and-push-docker-image:
@@ -27,14 +31,13 @@ jobs:
         with:
           context: .
           push: true
-          # เปลี่ยน 'your-username/your-repo-name' เป็นชื่อของคุณ
-          tags: korawitorkphol/ci-cd-react:latest 
+          tags: snowhazee1/cicd-react2026:latest
 
   deploy:
     needs: build-and-push-docker-image
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to Server via SSH
+      - name: Deploy to Azure VM via SSH
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -42,7 +45,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           # สคริปต์ที่จะไปรันบนเซิร์ฟเวอร์ของคุณเพื่อดึง Image ใหม่มาเปิด
           script: |
-            docker pull korawitorkphol/ci-cd-react:latest
+            docker pull snowhazee1/cicd-react2026:latest
             docker stop ci-cd-react-app || true
             docker rm ci-cd-react-app || true
-            docker run -d --name ci-cd-react-app -p 80:80 korawitorkphol/ci-cd-react:latest
+            docker run -d --name ci-cd-react-app --restart unless-stopped -p 80:80 snowhazee1/cicd-react2026:latest
