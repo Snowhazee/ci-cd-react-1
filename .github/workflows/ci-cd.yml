@@ -45,7 +45,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           # สคริปต์ที่จะไปรันบนเซิร์ฟเวอร์ของคุณเพื่อดึง Image ใหม่มาเปิด
           script: |
-            docker pull snowhazee1/cicd-react2026:latest
-            docker stop ci-cd-react-app || true
-            docker rm ci-cd-react-app || true
-            docker run -d --name ci-cd-react-app --restart unless-stopped -p 80:80 snowhazee1/cicd-react2026:latest
+            sudo docker pull snowhazee1/cicd-react2026:latest
+            sudo docker stop ci-cd-react-app || true
+            sudo docker rm ci-cd-react-app || true
+            sudo docker run -d --name ci-cd-react-app --restart unless-stopped -p 80:80 snowhazee1/cicd-react2026:latest
